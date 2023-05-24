@@ -1,0 +1,8 @@
+{
+    "ams_preprod" :
+    {
+        "url": "https://ams-ma-telus.preprod.n.svc.tv.telus.net",
+        "CreateUser_CRMAccountListMgmt_URI": "AMS/rest/crmAccountListMgmtService/subscriberRequest"
+
+    }
+}

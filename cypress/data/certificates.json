@@ -1,0 +1,8 @@
+{
+    "ams_preprod" :
+    {
+        "certificate_path": "./../../certificates/certificate_PreProd_Prod.pem",
+        "certificate_key_path": "./../../certificates/certificate_key_PreProd_Prod.pem"
+
+    }
+}

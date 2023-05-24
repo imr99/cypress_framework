@@ -1,0 +1,21 @@
+{
+  "name": "teluscypressautomation",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "cd cypress/e2e/bss_sanity && mocha testuser.cy.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "cypress": "^12.12.0",
+    "mocha": "^10.2.0"
+  },
+  "dependencies": {
+    "axios": "^1.4.0",
+    "chance": "^1.1.11",
+    "fs": "^0.0.1-security",
+    "text-encoding": "^0.7.0"
+  }
+}
