@@ -33,7 +33,7 @@ pipeline:
                   type: Run
           platform:
             arch: Amd64
-            os: Windows
+            os: Linux
           runtime:
             spec: {}
             type: Cloud
