@@ -1,0 +1,14 @@
+inputSet:
+  name: Build_cypress_framework_1685098050850-pr-trigger-input-set
+  identifier: Build_cypress_framework_1685098050850prtriggerinputset
+  orgIdentifier: default
+  projectIdentifier: framework
+  pipeline:
+    identifier: Build_cypress_framework_1685098050850
+    properties:
+      ci:
+        codebase:
+          build:
+            type: PR
+            spec:
+              number: <+trigger.prNumber>
