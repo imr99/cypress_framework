@@ -3,13 +3,12 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "cd cypress/e2e/bss_sanity && mocha testuser.cy.js"
+    "start": "mocha ./tests/testuser.js"
   },
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "This is used for testing microservices using automation in NodeJS and Mocha framework",
   "devDependencies": {
-    "cypress": "^12.12.0",
     "mocha": "^10.2.0"
   },
   "dependencies": {

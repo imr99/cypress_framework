@@ -2,10 +2,9 @@ const axios = require('axios');
 const https = require('https');
 const fs = require('fs');
 const { create } = require('domain');
-const {httpsAgentPreProd} = require('../../utils/config.js');
-const dataJson = require('../../data/testData.json');
-const apiConfigJson = require('../../data/apiConfig.json');
-
+const {httpsAgentPreProd} = require('../utils/config.js');
+const dataJson = require('../data/testData.json');
+const apiConfigJson = require('../data/apiConfig.json');
 
 var url = null;
 var uri = null;
@@ -14,7 +13,6 @@ var updatedRequestBody = null;
 var response = null;
 var randomUser = null;
 var randomNumber = Math.floor((Math.random() * 10000) + 1);
-
 
 describe('BSS Sanity Suite', () => {
 
