@@ -1,0 +1,14 @@
+inputSet:
+  name: Build_cypress_framework_1685098050850-push-trigger-input-set
+  identifier: Build_cypress_framework_1685098050850pushtriggerinputset
+  orgIdentifier: default
+  projectIdentifier: framework
+  pipeline:
+    identifier: Build_cypress_framework_1685098050850
+    properties:
+      ci:
+        codebase:
+          build:
+            type: branch
+            spec:
+              branch: <+trigger.branch>
