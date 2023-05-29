@@ -1,0 +1,33 @@
+pipeline:
+  identifier: Build_cypress_framework_1685341730751
+  name: Build cypress_framework
+  orgIdentifier: default
+  projectIdentifier: npm_build
+  properties:
+    ci:
+      codebase:
+        build: <+input>
+        connectorRef: account.Github
+        repoName: bishwaroopchk/cypress_framework
+  stages:
+    - stage:
+        identifier: build
+        name: build
+        spec:
+          cloneCodebase: true
+          execution:
+            steps:
+              - step:
+                  identifier: npminstall
+                  name: npm_install
+                  spec:
+                    command: npm install
+                  timeout: ""
+                  type: Run
+          platform:
+            arch: Amd64
+            os: Linux
+          runtime:
+            spec: {}
+            type: Cloud
+        type: CI
