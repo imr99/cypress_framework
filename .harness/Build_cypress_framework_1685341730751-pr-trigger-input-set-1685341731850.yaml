@@ -1,0 +1,14 @@
+inputSet:
+  name: Build_cypress_framework_1685341730751-pr-trigger-input-set
+  identifier: Build_cypress_framework_1685341730751prtriggerinputset
+  orgIdentifier: default
+  projectIdentifier: npm_build
+  pipeline:
+    identifier: Build_cypress_framework_1685341730751
+    properties:
+      ci:
+        codebase:
+          build:
+            type: PR
+            spec:
+              number: <+trigger.prNumber>
