@@ -24,6 +24,7 @@ pipeline:
                     command: npm install
                   timeout: ""
                   type: Run
+                command: npm start
           platform:
             arch: Amd64
             os: Linux
