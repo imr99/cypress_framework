@@ -10,14 +10,14 @@
         "CancelSubscription_UpdateCrmAccountListCommercialProfile_Copy_URI":  "/AMS/rest/updateCrmAccountListCommercialProfileService/updateCrmAccListCommProfileServiceRequest",
         "UpdateCrmAccountListCommercialProfile_URI": "AMS/rest/updateCrmAccountListCommercialProfileService/updateCrmAccListCommProfileServiceRequest",
         "CRMAccountDeviceListMgmtService_URI": "AMS/rest/crmAccountDeviceListMgmt/subscriberRequest",
-        "Get_Subscriber": "AMS/rest/subscriber?filterType=crmAccountId&filterValue={{username_new}}",
-        "getAssignedPackages": "AMS/bss/v1/users/{{username_new}}/packages",
-        "setPins": "AMS/bss/users/{{crmAccountId01}}/pin",
-        "checkPurchasePin": "AMS/bss/v1/users/{{crmAccountId01}}/purchasePin",
-        "checkParentalControlPin": "AMS/bss/v1/users/{{crmAccountId01}}/parentalControlPin",
-        "UserRefreshToken": "AMS/bss/v1/users/token/platforms?crmAccountId={{crmAccountId01}}",
-        "deleteUserRefreshToken": "AMS/bss/v1/users/token/platforms?deviceId=STBUSER02&crmAccountId={{crmAccountId01}}",
-        "Created_User_Deactivation": "AMS/rest/crmAccountListMgmtService/subscriberRequest",
-        "Created_User_Deletion": "AMS/rest/crmAccountListMgmtService/subscriberRequest"
+        "Get_Subscriber_URI": "AMS/rest/subscriber?filterType=crmAccountId&filterValue=",
+        "getAssignedPackages_URI": "AMS/bss/v1/users",
+        "setPins_URI": "AMS/bss/users",
+        "checkPurchasePin_URI": "AMS/bss/v1/users/{{crmAccountId01}}/purchasePin",
+        "checkParentalControlPin_URI": "AMS/bss/v1/users/{{crmAccountId01}}/parentalControlPin",
+        "UserRefreshToken_URI": "AMS/bss/v1/users/token/platforms?crmAccountId=",
+        "deleteUserRefreshToken_URI": "AMS/bss/v1/users/token/platforms?deviceId=STBUSER02&crmAccountId=",
+        "Created_User_Deactivation_URI": "AMS/rest/crmAccountListMgmtService/subscriberRequest",
+        "Created_User_Deletion_URI": "AMS/rest/crmAccountListMgmtService/subscriberRequest"
     }
 }
