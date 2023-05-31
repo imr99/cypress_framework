@@ -5,11 +5,6 @@ const { create } = require('domain');
 const { httpsAgentPreProd } = require('../utils/config.js');
 const dataJson = require('../data/testData.json');
 const apiConfigJson = require('../data/apiConfig.json');
-const chai = require('chai');
-const chaiHttp = require('chai-http');
-
-chai.use(chaiHttp);
-const expect = chai.expect;
 
 var url = null;
 var uri = null;
@@ -26,6 +21,7 @@ var randomNumber = Math.floor((Math.random() * 10000) + 1);
 var solutionOfferExternalID = 'Alacarte-AE_CP';
 var solutionOfferID = '5872';
 var propertyName = 'OPTIK';
+var pinSet=1111;
 //-------------------------------------------------
 
 describe('BSS Sanity Suite', () => {
@@ -104,7 +100,8 @@ describe('BSS Sanity Suite', () => {
         try {
             url = apiConfigJson.ams_preprod.url;
             uri = apiConfigJson.ams_preprod.userSearch_URI;
-            environementUrl = url + "/" + uri + "" + randomUser;
+            uri = uri.replace("{{username_new}}", randomUser);
+            environementUrl = url + "/" + uri;
             console.log('Env URL := ' + environementUrl);
 
             const config = {
@@ -117,34 +114,12 @@ describe('BSS Sanity Suite', () => {
                 'data': JSON.stringify(),
                 'httpsAgent': httpsAgentPreProd
             }
-            response = await axios(config);
-            let apiResponse = response.data;
-            console.log(apiResponse);
-
-
-            //       const resultCode = apiResponse.resultCode;
-            //       console.log(resultCode);
-            //       const resultDescription = apiResponse.resultDescription;
-            //       console.log(resultDescription);
-            const resultObj = apiResponse.resultObj;
-            console.log("Result Object Body := ", resultObj);
-            //       const totalCount = resultObj.totalCount;
-            // console.log(totalCount);
-            const accountSearchResponseList = resultObj.accountSearchResponseList;
-            console.log("Account Search Response List Body : = ", accountSearchResponseList);
-            accountSearchResponseList.forEach(account => {
-                // const crmAccountId = account.crmAccountId;
-                // const customerCode = account.customerCode;
-                const region = account.region;
-                console.log('Region Body : = ', region);
-                const accountList = account.accountList;
-                console.log("Account List Body : = ", accountList);
-                const consentList = account.consentList;
-                console.log("Consent List Body :=", consentList);
-                // ... access other properties of each account object
+            response = await axios(config).then((response) => {
                 statusCode = response.status;
+                console.log('Response Body :===>>> ', response.data);
                 console.log('Response Code :===>>> ', statusCode);
-            });
+                return response;
+            })
 
         } catch (err) {
             console.log(err);
@@ -177,8 +152,6 @@ describe('BSS Sanity Suite', () => {
                 'httpsAgent': httpsAgentPreProd
             }
             response = await axios(config).then((response) => {
-                // const apiResponse = response.data;
-                // console.log(apiResponse);
                 statusCode = response.status;
                 console.log('Response Body :===>>> ', response.data);
                 console.log('Response Code :===>>> ', statusCode);
@@ -328,14 +301,15 @@ describe('BSS Sanity Suite', () => {
         try {
             url = apiConfigJson.ams_preprod.url;
             uri = apiConfigJson.ams_preprod.Get_Subscriber_URI;
-            environementUrl = url + "/" + uri + "" + randomUser;
+            uri=uri.replace("{{username_new}}",randomUser);
+            environementUrl = url + "/" + uri;
             console.log('Environement URL :===>> ', environementUrl);
 
             const config = {
                 'method': 'GET',
                 'url': environementUrl,
                 'maxBodyLength': Infinity,
-                'headers': {
+                'headers': {    
                     'Content-Type': 'application/json'
                 },
                 'data': JSON.stringify(),
@@ -357,7 +331,8 @@ describe('BSS Sanity Suite', () => {
         try {
             url = apiConfigJson.ams_preprod.url;
             uri = apiConfigJson.ams_preprod.getAssignedPackages_URI;
-            environementUrl = url + "/" + uri + "/" + randomUser + "/" + "packages";
+            uri=uri.replace("{{username_new}}",randomUser);
+            environementUrl = url + "/" + uri;
             console.log('Environement URL :===>> ', environementUrl);
 
             const config = {
@@ -386,8 +361,8 @@ describe('BSS Sanity Suite', () => {
         try {
             url = apiConfigJson.ams_preprod.url;
             uri = apiConfigJson.ams_preprod.setPins_URI;
-            //  uri = uri.replace("{{crmAccountId01}}", randomUser);
-            environementUrl = url + "/" + uri + "/" + randomUser + "/" + "pin";
+             uri = uri.replace("{{crmAccountId01}}", randomUser);
+            environementUrl = url + "/" + uri;
             console.log('Environement URL :===>> ', environementUrl);
 
             updatedRequestBody = dataJson.testData.setPins;
@@ -404,7 +379,9 @@ describe('BSS Sanity Suite', () => {
                 'httpsAgent': httpsAgentPreProd
             }
             response = await axios(config).then((response) => {
-                console.log(response.data);
+                statusCode = response.status;
+                console.log('Response Body :===>>> ', response.data);
+                console.log('Response Code :===>>> ', statusCode);
                 return response;
 
             })
@@ -417,7 +394,8 @@ describe('BSS Sanity Suite', () => {
         try {
             url = apiConfigJson.ams_preprod.url;
             uri = apiConfigJson.ams_preprod.checkPurchasePin_URI;
-            environementUrl = url + "/" + uri + "/" + randomUser + "/" + "purchasePin";
+            uri=uri.replace("{{crmAccountId01}}",randomUser);
+            environementUrl = url + "/" + uri;
             console.log('Environement URL :===>> ', environementUrl);
 
             updatedRequestBody = dataJson.testData.checkPurchasePin;
@@ -434,7 +412,9 @@ describe('BSS Sanity Suite', () => {
                 'httpsAgent': httpsAgentPreProd
             }
             response = await axios(config).then((response) => {
-                console.log(response.data);
+                statusCode = response.status;
+                console.log('Response Body :===>>> ', response.data);
+                console.log('Response Code :===>>> ', statusCode);
                 return response;
 
             })
@@ -448,7 +428,8 @@ describe('BSS Sanity Suite', () => {
         try {
             url = apiConfigJson.ams_preprod.url;
             uri = apiConfigJson.ams_preprod.checkParentalControlPin_URI;
-            environementUrl = url + "/" + uri + "/" + randomUser + "/" + "parentalControlPin";
+            uri=uri.replace("{{crmAccountId01}}",randomUser)
+            environementUrl = url + "/" + uri;
             console.log('Environement URL :===>> ', environementUrl);
 
             updatedRequestBody = dataJson.testData.checkParentalControlPin;
@@ -465,7 +446,9 @@ describe('BSS Sanity Suite', () => {
                 'httpsAgent': httpsAgentPreProd
             }
             response = await axios(config).then((response) => {
-                console.log(response.data);
+                statusCode = response.status;
+                console.log('Response Body :===>>> ', response.data);
+                console.log('Response Code :===>>> ', statusCode);
                 return response;
 
             })
@@ -480,7 +463,8 @@ describe('BSS Sanity Suite', () => {
         try {
             url = apiConfigJson.ams_preprod.url;
             uri = apiConfigJson.ams_preprod.UserRefreshToken_URI;
-            environementUrl = url + "/" + uri + "" + randomUser;
+            uri=uri.replace("{{crmAccountId01}}",randomUser);
+            environementUrl = url + "/" + uri;
             console.log('Env URL :===>>> ' + environementUrl);
 
             const config = {
@@ -510,7 +494,8 @@ describe('BSS Sanity Suite', () => {
         try {
             url = apiConfigJson.ams_preprod.url;
             uri = apiConfigJson.ams_preprod.deleteUserRefreshToken_URI;
-            environementUrl = url + "/" + uri + "" + randomUser;
+            uri=uri.replace("{{crmAccountId01}}",randomUser);
+            environementUrl = url + "/" + uri;
             console.log('Env URL :===>>> ' + environementUrl);
 
             const config = {
