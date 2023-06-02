@@ -264,6 +264,85 @@
                     ]
                 }
             ]
+        },
+        "USER_LOGIN": {
+            "credentialsExtAuth": {
+                "deviceInfo": {
+                    "deviceId": "38596700130210077",
+                    "deviceIdType": "DEVICEID",
+                    "deviceType": "ANDROID_TV_STB"
+                },
+                "credentials": {
+                    "secret": "W9OdaxFYJLWObiJHTtKudlUlwReoShejWoEAAABl",
+                    "client_id": "opus",
+                    "state": "fb1b6c54-1933-4ed5-995d-935e18518f73",
+                    "redirect_uri": "http://localhost"
+                }
+            }
+        },
+        "USER_ACCOUNTS_SUBACCOUNTS": {
+            "profileName": "Squad4User{{$timestamp}}",
+            "email": "Squad4User{{$timestamp}}@Gaoling.com",
+            "pcLevelEpg": "50",
+            "pcLevelVod": "50",
+            "isAdmin": "Y",
+            "purchaseEnabled": "Y",
+            "avatarId": "avatarID{{$timestamp}}",
+            "exitProofEnabled": true,
+            "kidsProfile": false,
+            "closedCaptioningEnabled": false,
+            "describedVideoEnabled": true,
+            "uiLanguage": "EN"
+        },
+        "SubAccount_LoginStandard": {
+            "userId": "{{userId}}"
+        },
+        "USER_PROFILE_PUT": {
+            "profileName": "Squad4User{{$timestamp}}",
+            "closedCaptioningEnabled": false,
+            "describedVideoEnabled": true
+        },
+        "USER_DEVICESESSIONS_SubProfile": {
+            "geoZipCode": "1111"
+        },
+        "STOP_CONTENT_SubProfile": {
+            "bookmark": {
+                "startDeltaTime": 100
+            },
+            "deltaThreshold": 1,
+            "deviceId": "DEVICEID",
+            "deviceVersion": 3
+        },
+        "STOP_CONTENT_LIVE_COPY": {
+            "bookmark": {
+                "startDeltaTime": 100
+            },
+            "deltaThreshold": 1,
+            "deviceId": "DEVICEID",
+            "deviceVersion": 3
+        },
+        "USER_PURCHASES": {
+            "commercialPackageId": "5182",
+            "pin": "1111"
+        },
+        "USER_DEVICESESSIONS": {
+            "geoZipCode": "1111"
+        },
+        "STOP_CONTENT": {
+            "bookmark": {
+                "startDeltaTime": 100
+            },
+            "deltaThreshold": 1,
+            "deviceId": "DEVICEID",
+            "deviceVersion": 3
+        },
+        "STOP_CONTENT_LIVE": {
+            "bookmark": {
+                "startDeltaTime": 100
+            },
+            "deltaThreshold": 1,
+            "deviceId": "DEVICEID",
+            "deviceVersion": 3
         }
     }
 }
