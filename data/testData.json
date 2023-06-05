@@ -5,7 +5,7 @@
             "tenantName": "TELUS",
             "subscriberList": [
                 {
-                    "crmAccountId": "{{sometext}}",
+                    "crmAccountId": "{{timestamp}}",
                     "userType": "R",
                     "qualitySetting": "1",
                     "userPaymentMethod": "5",
@@ -40,7 +40,7 @@
                         {
                             "isMaster": "Y",
                             "userStatus": "1",
-                            "username": "{{sometext}}",
+                            "username": "{{timestamp}}",
                             "password": "Passw0rd1!",
                             "firstname": "K",
                             "surname": "K",
@@ -88,8 +88,8 @@
                     "checkSolutionOfferCompatability": "Y",
                     "commProfileList": [
                         {
-                            "solutionOfferExternalID": "{{commercialPackageId_Add}}",
-                            "solutionOfferID": "{{solutionOfferId_Add}}",
+                            "solutionOfferExternalID": "Alacarte-AE_CP",
+                            "solutionOfferID": "5872",
                             "operationType": "DELETE",
                             "startDate": "2017-03-20",
                             "endDate": "",
@@ -343,6 +343,22 @@
             "deltaThreshold": 1,
             "deviceId": "DEVICEID",
             "deviceVersion": 3
+        },
+        "USER_LOGIN_Copy": {
+                "credentialsExtAuth": {
+                    "deviceInfo": {
+                        "deviceId": "2333r2r23ertghfvqe",
+                        "deviceIdType": "ANDROID_TV_BYOD",
+                        "deviceType": "ANDROID_TV_BYOD"
+                    },
+                    "credentials": {
+                        "secret": "RAhKX9uREtjaxBGR5zxXQWqldYE0G6Ek4fIAAABm",
+                        "client_id": "opus",
+                        "state": "fb1b6c54-1933-4ed5-995d-935e18518f73",
+                        "redirect_uri": "http://localhost"
+                    }
+                }
+            },
+            "USER_PROFILE_Copy": {}
         }
     }
-}

@@ -21,8 +21,10 @@
         "USER_LOGIN_URI": "TELUS/T2.0/R/ENG/{{platform}}/{{property}}/USER/SESSIONS"
     },
     "preprod": {
-        "url": "https://client68-telus.preprod.n.svc.tv.telus.net",
-        "USER_LOGIN_URI": "TELUS/T2.0/R/ENG/{{platform}}/{{property}}/USER/SESSIONS",
+        "url": "https://telus.preprod.n.svc.tv.telus.net",
+        "USER_LOGIN_URI": "TELUS/T2.1/A/ENG/ANDROID_TV_STB/OPTIK/USER/SESSIONS",
+        "USER_PROFILE_URI": "TELUS/T2.1/R/ENG/ANDROID_TV_STB/OPTIK/USER/PROFILE",
+
         "USER_PROFILE_GET_URI": "TELUS/T2.0/R/ENG/{{platform}}/{{property}}/USER/PROFILE",
         "USER_ACCOUNTS_SUBACCOUNTS_URI": "TELUS/T2.0/R/ENG/{{platform}}/{{property}}/USER/ACCOUNTS/SUBACCOUNTS",
         "SubAccount_Login_Standard_URI": "TELUS/T2.0/R/ENG/{{platform}}/{{property}}/USER/ACCOUNTS/SUBACCOUNT/LOGIN",
