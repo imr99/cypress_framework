@@ -34,7 +34,7 @@ describe('BSS Sanity Suite', () => {
             console.log('URL', environementUrl);
             updatedRequestBody = dataJson.testData.USER_LOGIN_Copy;
 
-            const config = {
+           const config = {
                 'method': 'POST',
                 'url': environementUrl,
                 'maxBodyLength': Infinity,
@@ -49,28 +49,42 @@ describe('BSS Sanity Suite', () => {
             statusCode = response.status;
             console.log('Response Body :===>>> ', response.data);
            
-            const headers = cleansCode(String(response.headers['set-cookie']))
-            console.log("COOKIE  HEADERS- ", headers);
+           const headers = cleansCode(String(response.headers['set-cookie']))
+          //  console.log("COOKIE  HEADERS- ", headers);
             // const headerConfig = {
             //     telus_access_cookie : response.headers['set-cookie']['telus_access_cookie'],
             //     telus_refresh_cookie: response.headers['set-cookie']['telus_refresh_cookie']
             // }
 
-            return String(response.headers['set-cookie']);
+            return headers;
             })  
 
             uri = apiConfigJson.preprod.USER_PROFILE_URI;
             environementUrl = url + "/" + uri;
-            console.log('URL', environementUrl);
-            updatedRequestBody = dataJson.testData.USER_PROFILE_Copy;
-
+            // const postmanToken = '_cfuvid=Jg.sizRTqUGab_3DC9sEaL84K3ZTgX_HJaA_l8NyTC8-1685382328448-0-604800000; Path=/; Domain=postman.com; Secure; HttpOnly;'
+            // const pfData = 'PF=ZkKwiVvVsVjMKBkBvrEM89; Path=/; Secure; HttpOnly;'
+            // const cookieData = headersConfig + postmanToken + pfData
+            // console.log('MY COOKIE DATA - '+cookieData);
+            const cookieData = 'avs_cookie=' + headersConfig.avs_cookie + ';up=' + headersConfig.up + ';telus_user_profile=' + headersConfig.telus_user_profile 
+            +';sessionId=' + headersConfig.sessionId
+            + ';telus_refresh_cookie=' +  headersConfig.telus_refresh_cookie + ';telus_access_cookie=' + headersConfig.telus_access_cookie
+            console.log("cookieData : - ", cookieData);
+            console.log('ENV URL ', environementUrl)
 
             const config2 = {
-                'method': 'POST',
+                'method': 'GET',
                 'url': environementUrl,
                 'maxBodyLength': Infinity,
+                'Cache-Control': 'no-cache',
                 'headers': {
-                    'Content-Type': 'application/json'
+                    'restful':'yes',
+                    'Content-Type': 'application/json',
+                    'User-Agent': 'PostmanRuntime/7.32.2',
+                    'Accept': '*/*',
+                    'Host': 'telus.preprod.n.svc.tv.telus.net',
+                   // 'Postman-Token': 'c73b4226-17b3-414e-a0e0-f2067df7752d',
+                    'Cookie':cookieData,
+                    'Cache-Control': 'no-cache',
                     // 'avs_cookie': headersConfig.avs_cookie,
                     // 'sessionId': headersConfig.sessionId,
                     // 'telus_access_cookie': headersConfig.telus_access_cookie,
@@ -78,14 +92,13 @@ describe('BSS Sanity Suite', () => {
                     // 'telus_user_profile': headersConfig.telus_user_profile
 
                 },
-                'Cookie': headersConfig,
-                'data': JSON.stringify(updatedRequestBody),
                 'httpsAgent': httpsAgentPreProd
             }
 
             response = await axios(config2).then((response) => {
                 statusCode = response.status;
                 console.log('Response Body for 2 :===>>> ', response.data);
+                console.log('RESPONSE 2 HEADERS - '+response.headers);
                 return response;
                 })
 
