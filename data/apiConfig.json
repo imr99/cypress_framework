@@ -55,5 +55,14 @@
         "CONTENT_VIDEOURL_LIVEchannel_URI": "TELUS/T2.0/R/ENG/{{platform}}/{{property}}/CONTENT/VIDEOURL/LIVE/75/10",
         "STOP_CONTENT_LIVE_URI": "TELUS/T2.0/R/ENG/{{platform}}/{{property}}/CONTENT/USERDATA/LIVE/75",
         "USER_SESSIONS_URI": "TELUS/T2.0/R/ENG/{{platform}}/{{property}}/USER/SESSIONS"
+    },
+    "AVS4_1644":
+    {
+        "cleanUP":"https://www.postman.com/",
+     "framework_Initialization":"http://localhost:8080/libraries/sq4_framework.js",
+     "Test_Data_Initialization":"https://www.postman.com/",
+     "Initiate_Flow":"https://oauth.cto.tv.telus.net/as/authorization.oauth2?response_type=code&scope=opuscisso&client_id=opus&state={{global_deviceId}}&redirect_uri=http://localhost",
+     "Get_Login_Page":"https://telusidentity-pp.telus.com/idp/SSO.saml2",
+     "Submit_Credentials":"https://telusidentity-pp.telus.com/idp/KF6ll/resumeSAML20/idp/SSO.ping?service_type=optik" 
     }
 }

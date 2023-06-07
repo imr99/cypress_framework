@@ -9,15 +9,15 @@ const expect = require('chai').expect;
 //import * as responses from '../responsecodes/responseCode'
 //const parses = require('../responsecodes/responseCode');
 
-var url = null;
-var uri = null;
-var environementUrl = null;
-var updatedRequestBody = null;
-var response = null;
-var randomUser = null;
-var statusCode = null;
-var statusText = null;
-var randomNumber = Math.floor((Math.random() * 10000) + 1);
+    var url = null;
+    var uri = null;
+    var environmentUrl = null;
+    var updatedRequestBody = null;
+    var response = null;
+    var randomUser = null;
+    var statusCode = null;
+    var statusText = null;
+    var randomNumber = Math.floor((Math.random() * 10000) + 1);
 
 //--------------------------------------------------------------
 //solutionOfferExternalID==>>Alacarte-BBC_World_CP
@@ -32,14 +32,14 @@ describe('BSS Sanity Suite', () => {
     it('Create User - CRM Account List', async function () {
         this.timeout(0);
         try {
-            randomUser = "TestUser" + randomNumber;
-            url = apiConfigJson.ams_preprod.url;
-            uri = apiConfigJson.ams_preprod.CreateUser_CRMAccountListMgmt_URI;
-            environementUrl = url + "/" + uri;
+          randomUser = "TestUser" + randomNumber;
+          url = apiConfigJson.ams_preprod.url;
+          uri = apiConfigJson.ams_preprod.CreateUser_CRMAccountListMgmt_URI;
+          environmentUrl = url + "/" + uri;
 
-            updatedRequestBody = dataJson.testData.CreateUser_CRMAccountListMgmt;
-            updatedRequestBody.subscriberList[0].crmAccountId = randomUser;
-            updatedRequestBody.subscriberList[0].accountList[0].username = randomUser;
+          updatedRequestBody = dataJson.testData.CreateUser_CRMAccountListMgmt;
+          updatedRequestBody.subscriberList[0].crmAccountId = randomUser;
+          updatedRequestBody.subscriberList[0].accountList[0].username = randomUser;
 
             const config = {
                 'method': 'POST',

@@ -273,7 +273,7 @@
                     "deviceType": "ANDROID_TV_STB"
                 },
                 "credentials": {
-                    "secret": "W9OdaxFYJLWObiJHTtKudlUlwReoShejWoEAAABl",
+                    "secret": "1gOiZHBBg6jrbFY7O1FYs26kBFvbSHRahZAAAABm",
                     "client_id": "opus",
                     "state": "fb1b6c54-1933-4ed5-995d-935e18518f73",
                     "redirect_uri": "http://localhost"
