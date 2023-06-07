@@ -23,6 +23,7 @@ var uri = null;
 var environementUrl = null;
 var updatedRequestBody = null;
 var response = null;
+var response2 = null;
 var randomUser = null;
 var statusCode = null;
 var statusText = null;
@@ -60,7 +61,7 @@ describe('BSS Sanity Suite', () => {
             }
 
             response = await axios(config).then((response) => {
-            //console.log('Response Body 1:===>>> ', response.data);
+           // console.log('Response Body 1:===>>> ', response.data);
            // console.log('HEADERS -------'+response.headers);
 
             cookie = response.headers['set-cookie'];
@@ -77,8 +78,8 @@ describe('BSS Sanity Suite', () => {
             relayStateValue = $('input[name="RelayState"]').val();
             
             // console.log('MY TEXT -- ', formAction);
-            // console.log('MY TEXT -- ', samlRequestValue);
-            // console.log('MY TEXT -- ', relayStateValue);
+           //  console.log('MY TEXT -- ', samlRequestValue);
+             //console.log('MY TEXT -- ', relayStateValue);
             }) 
             
             //var data = JSON.stringify({ "RelayState": relayStateValue, "SAMLRequest": samlRequestValue });
@@ -116,12 +117,17 @@ describe('BSS Sanity Suite', () => {
                 //console.log('ACTION URL===>>> ', actionURL);
                 }) 
 
+                let IDToken1 = 'ci.pp.sqd04.ts016@ci-opus-stg.com'
+                let IDToken2 = 'Telus@1234'
 
                 const userCreds = new URLSearchParams();
-                userCreds.append('IDToken1', 'ci.pp.sqd04.ts016@ci-opus-stg.com');
-                userCreds.append('IDToken2', 'Telus@1234');
+                userCreds.append('IDToken1', IDToken1);
+                userCreds.append('IDToken2', IDToken2);
                 userCreds.append('UserLanguage', 'en');
+             //   console.log('ACTION URL ---------- '+actionURL)
                 
+              //  let actualParams = userCreds.toString().replace(/%40/g, '');
+              //  console.log('USER CREDS -------- ', actualParams);
 
                 const config3 = {
                     'method': 'POST',
@@ -135,12 +141,13 @@ describe('BSS Sanity Suite', () => {
                         'User-Agent': 'PostmanRuntime/7.32.2',
                         'Accept': '*/*',
                         'Origin': 'https://telusidentity-pp.telus.com',
-                        'Referer': formAction,
-                       //'Referer': 'https://telusidentity-pp.telus.com/idp/SSO.saml2',
-                       't-optik-tvos': '1.0.0'
+                       // 'Referer': formAction,
+                       'Referer': 'https://telusidentity-pp.telus.com/idp/SSO.saml2',
+                       't-optik-tvos': '1.0.0',
+                       'telusScripts': 'myTelusE2E'
     
                     },
-                    'data': userCreds.toString(),
+                    'data': userCreds,
                     'httpsAgent': httpsAgentPreProd
                 }
     
@@ -148,18 +155,29 @@ describe('BSS Sanity Suite', () => {
                    // console.log('Response Body 3:===>>> '+ response.data);
                     html =  response.data;
                     $ = cheerio.load(html);
-                    
+            
                    relayStateValue = $('input[name="RelayState"]').val();
                    samlRequestValue = $('input[name="SAMLResponse"]').val();
                    formAction = $('form').attr('action');
-                    //console.log('RELAY STATE ', relayStateValue);
+                  // actionURL = $('input[name="actionURL"]').attr('value');
                     
-                    }) 
+                   
+                   
+                    
+                    });
+
+                    //  console.log('RELAY STATE ', relayStateValue);
+                    // console.log('SAML ', samlRequestValue);
+               // console.log('ACTIOB URL', actionURL);
+               // console.log('FORM ACTION -----', formAction);
+                
 
                     const formData2 = new URLSearchParams();
                     formData2.append('RelayState', relayStateValue);
                     formData2.append('SAMLRequest', samlRequestValue);
-
+                    
+                    
+                    //console.log('FORM DATA 2 - ', formData2.toString().replace(/%/g, ""));
 
                     const config4 = {
                         'method': 'POST',
@@ -175,13 +193,14 @@ describe('BSS Sanity Suite', () => {
                             'Origin': 'https://telusidentity-pp.telus.com',
                             'Referer': 'https://telusidentity-pp.telus.com'+actionURL,
                            //'Referer': 'https://telusidentity-pp.telus.com/idp/SSO.saml2',
-                           //'t-optik-tvos': '1.0.0'
+                             't-optik-tvos': '1.0.0',
+                             'telusScripts': 'myTelusE2E'
         
                         },
-                        'data': formData2.toString(),
+                        'data': formData2.toString().replace(/%/g, ""),
                         'httpsAgent': httpsAgentPreProd
+
                     }
-        
                     response = await axios(config4).then((response) => {
                         console.log('Response Body 4:===>>> '+ response.data);
                         html =  response.data;
