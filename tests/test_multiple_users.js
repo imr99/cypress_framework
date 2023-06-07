@@ -58,7 +58,7 @@ describe('BSS Sanity Suite', () => {
             updatedRequestBody = dataJson.testData.USER_LOGIN_Copy;
 
            const config = {
-                'method': 'POST',
+                'method': 'GET',
                 'url': environementUrl,
                 'maxBodyLength': Infinity,
                 'headers': {
@@ -98,7 +98,7 @@ describe('BSS Sanity Suite', () => {
             console.log('ENV URL ', environementUrl)
 
             const config2 = {
-                'method': 'GET',
+                'method': 'POST',
                 'url': environementUrl,
                 'maxBodyLength': Infinity,
                 'Cache-Control': 'no-cache',
@@ -124,9 +124,43 @@ describe('BSS Sanity Suite', () => {
             response = await axios(config2).then((response) => {
                 statusCode = response.status;
                 console.log('Response Body for 2 :===>>> ', response.data);
-                console.log('RESPONSE 2 HEADERS - '+response.headers);
+                console.log('RESPONSE 2 HEADERS - '+response);
                 return response;
                 })
+
+
+
+                // const config3 = {
+                //     'method': 'POST',
+                //     'url': environementUrl,
+                //     'maxBodyLength': Infinity,
+                //     'Cache-Control': 'no-cache',
+                //     'headers': {
+                //         'restful':'yes',
+                //         'Content-Type': 'application/json',
+                //         'User-Agent': 'PostmanRuntime/7.32.2',
+                //         'Accept': '*/*',
+                //         'Host': 'telus.preprod.n.svc.tv.telus.net',
+                //        // 'Postman-Token': 'c73b4226-17b3-414e-a0e0-f2067df7752d',
+                //         'Cookie':cookieData,
+                //         'Cache-Control': 'no-cache',
+                //         // 'avs_cookie': headersConfig.avs_cookie,
+                //         // 'sessionId': headersConfig.sessionId,
+                //         // 'telus_access_cookie': headersConfig.telus_access_cookie,
+                //         // 'telus_refresh_cookie': headersConfig.telus_refresh_cookie,
+                //         // 'telus_user_profile': headersConfig.telus_user_profile
+    
+                //     },
+                //     'httpsAgent': httpsAgentPreProd
+                // }
+    
+                // response = await axios(config3).then((response) => {
+                //     statusCode = response.status;
+                //     console.log('Response Body for 3 :===>>> ', response.data);
+                //     console.log('RESPONSE 2 HEADERS - '+response.headers);
+                //     return response;
+                //     })
+    
 
         } catch (err) {
             console.log(err);
