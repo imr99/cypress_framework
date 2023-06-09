@@ -44,6 +44,7 @@ describe('BSS Sanity Suite', () => {
             let $ = null;
             let actionURL = null;
             
+            
 
            const config = {
                 'method': 'GET',
@@ -65,6 +66,7 @@ describe('BSS Sanity Suite', () => {
            // console.log('HEADERS -------'+response.headers);
 
             cookie = response.headers['set-cookie'];
+           
            // console.log('COOKIE  -------'+response.headers['set-cookie']);
 
            
@@ -117,7 +119,7 @@ describe('BSS Sanity Suite', () => {
                 //console.log('ACTION URL===>>> ', actionURL);
                 }) 
 
-                let IDToken1 = 'ci.pp.sqd04.ts016@ci-opus-stg.com'
+                let IDToken1 = 'ci.pp.sqd04.ts018@ci-opus-stg.com'
                 let IDToken2 = 'Telus@1234'
 
                 const userCreds = new URLSearchParams();
@@ -175,9 +177,35 @@ describe('BSS Sanity Suite', () => {
                     const formData2 = new URLSearchParams();
                     formData2.append('RelayState', relayStateValue);
                     formData2.append('SAMLRequest', samlRequestValue);
+
+
+                    var details = {
+                        'RelayState': relayStateValue,
+                        'SAMLRequest': samlRequestValue
+                    };
                     
+                    var formBody = [];
+                    for (var property in details) {
+                      var encodedKey = encodeURIComponent(property);
+                      var encodedValue = encodeURIComponent(details[property]);
+                      formBody.push(encodedKey + "=" + encodedValue);
+                    }
+                    formBody = formBody.join("&");
                     
-                    //console.log('FORM DATA 2 - ', formData2.toString().replace(/%/g, ""));
+                    let referer = 'https://telusidentity-pp.telus.com'+actionURL;
+
+                    
+                   // console.log('FORM DATA 2 - ', formData2.toString().replace(/%/g, ""));
+                   // console.log('FORM BODY - ', formBody.toString().replace(/%/g, ""));
+
+                    
+                    //let updatedCookie = new String(cookie).split(';');
+
+                    //let arr = updatedCookie.split(';');
+                    //console.log('UPDATED COOKIE - ', updatedCookie[0]);
+                    console.log('FORM ACTION >>>>> ', formAction);
+                    //console.log('ORIGIN >>>>>>>'+origin);
+                    console.log('REFERER >>>>>> '+referer);
 
                     const config4 = {
                         'method': 'POST',
@@ -186,30 +214,39 @@ describe('BSS Sanity Suite', () => {
                         'maxBodyLength': Infinity,
                         'headers': {
                             'Cookie': cookie,
-                            'Content-Type': 'application/x-www-form-urlencoded',
+                           'Cache-Control': 'max-age=0',
+                           'Content-Type': 'application/x-www-form-urlencoded',
                             'Host': 'oauth.cto.tv.telus.net',   //CHANGE THIS TO FETCH FROM ACTION URL OF FORM
                             'User-Agent': 'PostmanRuntime/7.32.2',
                             'Accept': '*/*',
                             'Origin': 'https://telusidentity-pp.telus.com',
-                            'Referer': 'https://telusidentity-pp.telus.com'+actionURL,
+                            'Referer': referer,
                            //'Referer': 'https://telusidentity-pp.telus.com/idp/SSO.saml2',
                              't-optik-tvos': '1.0.0',
-                             'telusScripts': 'myTelusE2E'
+                             'telusScripts': 'myTelusE2E',
+                            'Connection': 'keep-alive'
+                           // 'json': true
         
                         },
-                        'data': formData2.toString().replace(/%/g, ""),
+                        data: formBody.toString().replace(/%/g, ""),
                         'httpsAgent': httpsAgentPreProd
 
                     }
                     response = await axios(config4).then((response) => {
                         console.log('Response Body 4:===>>> '+ response.data);
-                        html =  response.data;
-                        $ = cheerio.load(html);
+                        //html =  response.data;
+                        //$ = cheerio.load(html);
+                        response.render('error', {
+                            message: err.message,
+                            error: {}
+                        });
                         
                        // console.log('RESPONSE PF COOKIE 3 - '+ response.headers);
                     //    relayStateValue = $('input[name="RelayState"]').val();
                     //     console.log('ACTION URL ', relayStateValue);
                         }) 
+
+                    //    console.log('REFERER >>>>>> '+referer);
     
 
         } catch (err) {
