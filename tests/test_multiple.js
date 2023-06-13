@@ -16,6 +16,9 @@ var cookieSession = require('cookie-session')
 var express = require('express')
 var app = express()
 const cheerio = require('cheerio');
+const qs = require('qs');
+var formurlencoded = require('form-urlencoded');
+const querystring = require('querystring');
 
 
 var url = null;
@@ -67,7 +70,7 @@ describe('BSS Sanity Suite', () => {
 
             cookie = response.headers['set-cookie'];
            
-           // console.log('COOKIE  -------'+response.headers['set-cookie']);
+          //  console.log('COOKIE FROM 1 -------'+cookie);
 
            
             html = response.data;
@@ -117,6 +120,7 @@ describe('BSS Sanity Suite', () => {
                 $ = cheerio.load(html);
                 actionURL = $('input[name="actionURL"]').attr('value');
                 //console.log('ACTION URL===>>> ', actionURL);
+            //    console.log('COOKIE FROM 2 -------'+cookie);
                 }) 
 
                 let IDToken1 = 'ci.pp.sqd04.ts018@ci-opus-stg.com'
@@ -154,62 +158,34 @@ describe('BSS Sanity Suite', () => {
                 }
     
                 response = await axios(config3).then((response) => {
-                   // console.log('Response Body 3:===>>> '+ response.data);
+                    //console.log('Response Body 3:===>>> '+ response.data);
                     html =  response.data;
                     $ = cheerio.load(html);
             
                    relayStateValue = $('input[name="RelayState"]').val();
                    samlRequestValue = $('input[name="SAMLResponse"]').val();
                    formAction = $('form').attr('action');
-                  // actionURL = $('input[name="actionURL"]').attr('value');
-                    
-                   
-                   
-                    
+
+                 //  console.log('COOKIE FROM 3 -------'+cookie);
+                  // actionURL = $('input[name="actionURL"]').attr('value');                   
                     });
 
-                    //  console.log('RELAY STATE ', relayStateValue);
-                    // console.log('SAML ', samlRequestValue);
-               // console.log('ACTIOB URL', actionURL);
-               // console.log('FORM ACTION -----', formAction);
-                
+                    //  const formData2 = new URLSearchParams();
+                    // formData2.append('RelayState', relayStateValue);
+                    //  formData2.append('SAMLRequest', samlRequestValue);
 
-                    const formData2 = new URLSearchParams();
-                    formData2.append('RelayState', relayStateValue);
-                    formData2.append('SAMLRequest', samlRequestValue);
+                    const formData2 = {
+                        RelayState: relayStateValue,
+                        SAMLRequest: samlRequestValue
+                      };
 
 
-                    var details = {
-                        'RelayState': relayStateValue,
-                        'SAMLRequest': samlRequestValue
-                    };
+                     let referer = 'https://telusidentity-pp.telus.com'+actionURL;
                     
-                    var formBody = [];
-                    for (var property in details) {
-                      var encodedKey = encodeURIComponent(property);
-                      var encodedValue = encodeURIComponent(details[property]);
-                      formBody.push(encodedKey + "=" + encodedValue);
-                    }
-                    formBody = formBody.join("&");
-                    
-                    let referer = 'https://telusidentity-pp.telus.com'+actionURL;
-
-                    
-                   // console.log('FORM DATA 2 - ', formData2.toString().replace(/%/g, ""));
-                   // console.log('FORM BODY - ', formBody.toString().replace(/%/g, ""));
-
-                    
-                    //let updatedCookie = new String(cookie).split(';');
-
-                    //let arr = updatedCookie.split(';');
-                    //console.log('UPDATED COOKIE - ', updatedCookie[0]);
-                    console.log('FORM ACTION >>>>> ', formAction);
-                    //console.log('ORIGIN >>>>>>>'+origin);
-                    console.log('REFERER >>>>>> '+referer);
-
                     const config4 = {
                         'method': 'POST',
-                        'url': formAction,
+                        //'url': formAction,
+                        'url': 'https://oauth.cto.tv.telus.net/sp/ACS.saml2',
                         //'url': 'https://telusidentity-pp.telus.com/idp/IV6jn/resumeSAML20/idp/SSO.ping?service_type=optik',
                         'maxBodyLength': Infinity,
                         'headers': {
@@ -223,34 +199,35 @@ describe('BSS Sanity Suite', () => {
                             'Referer': referer,
                            //'Referer': 'https://telusidentity-pp.telus.com/idp/SSO.saml2',
                              't-optik-tvos': '1.0.0',
-                             'telusScripts': 'myTelusE2E',
-                            'Connection': 'keep-alive'
+                            // 'telusScripts': 'myTelusE2E',
+                           // 'Connection': 'keep-alive'
                            // 'json': true
         
                         },
-                        data: formBody.toString().replace(/%/g, ""),
+                        //data: formData2.toString().replace(/%/g, ""),
+                        data: formData2,
                         'httpsAgent': httpsAgentPreProd
 
                     }
-                    response = await axios(config4).then((response) => {
-                        console.log('Response Body 4:===>>> '+ response.data);
-                        //html =  response.data;
-                        //$ = cheerio.load(html);
-                        response.render('error', {
-                            message: err.message,
-                            error: {}
-                        });
-                        
-                       // console.log('RESPONSE PF COOKIE 3 - '+ response.headers);
-                    //    relayStateValue = $('input[name="RelayState"]').val();
-                    //     console.log('ACTION URL ', relayStateValue);
-                        }) 
 
-                    //    console.log('REFERER >>>>>> '+referer);
+                   
+
+                    //console.log('CONFIG >>>>>>> ', JSON.stringify(config4))
+                    //console.log('-------------------------------------------------');
+
+                   // console.log('COOKIE BEFORE SENDING REQUEST -------'+cookie);
+
+                    response = await axios(config4).then((response) => {
+                       console.log('Response Body 4:===>>> '+ response.data);
+                        // html =  response.data;
+                        // $ = cheerio.load(html);
+                        
+                       }) 
+
     
 
         } catch (err) {
-            console.log(err);
+            console.log(err.response.data);
         }
     });
 

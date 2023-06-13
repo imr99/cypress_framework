@@ -40,7 +40,7 @@ describe('BSS Sanity Suite', () => {
              */
             app.use(cookieSession({
                 name: 'session',
-                keys: ['a5UFK8Z6gQOQTihV1eZLSUNVMeHZrluYLJAAAABm', '64MsW4nco1gYD43rN7vsDvuvACUTn-5kvfcAAABm'],
+                keys: [],
               
                 // Cookie Options
                 maxAge: 24 * 60 * 60 * 1000 // 24 hours
