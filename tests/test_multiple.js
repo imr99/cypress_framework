@@ -19,6 +19,7 @@ const cheerio = require('cheerio');
 const qs = require('qs');
 var formurlencoded = require('form-urlencoded');
 const querystring = require('querystring');
+const { error } = require('console');
 
 
 var url = null;
@@ -38,7 +39,7 @@ describe('BSS Sanity Suite', () => {
 
     it('Create User - CRM Account List', async function () {
         this.timeout(0);
-        try {
+       // try {
             let samlRequestValue = null;
             let relayStateValue = null;
             let formAction = null;
@@ -46,10 +47,10 @@ describe('BSS Sanity Suite', () => {
             let html = null;
             let $ = null;
             let actionURL = null;
-            
-            
 
-           const config = {
+
+
+            const config = {
                 'method': 'GET',
                 'url': "https://oauth.cto.tv.telus.net/as/authorization.oauth2?response_type=code&scope=opuscisso&client_id=opus&state=STBUSER02&redirect_uri=http://localhost",
                 'maxBodyLength': Infinity,
@@ -65,34 +66,34 @@ describe('BSS Sanity Suite', () => {
             }
 
             response = await axios(config).then((response) => {
-           // console.log('Response Body 1:===>>> ', response.data);
-           // console.log('HEADERS -------'+response.headers);
+                // console.log('Response Body 1:===>>> ', response.data);
+                // console.log('HEADERS -------'+response.headers);
 
-            cookie = response.headers['set-cookie'];
-           
-          //  console.log('COOKIE FROM 1 -------'+cookie);
+                cookie = response.headers['set-cookie'];
 
-           
-            html = response.data;
-            $ = cheerio.load(html);
+                //  console.log('COOKIE FROM 1 -------'+cookie);
 
-             
-            // const mytext2 = $('[name="SAMLRequest"][value]');
-            formAction = $('form').attr('action');
-            samlRequestValue = $('input[name="SAMLRequest"]').val();
-            relayStateValue = $('input[name="RelayState"]').val();
-            
-            // console.log('MY TEXT -- ', formAction);
-           //  console.log('MY TEXT -- ', samlRequestValue);
-             //console.log('MY TEXT -- ', relayStateValue);
-            }) 
-            
+
+                html = response.data;
+                $ = cheerio.load(html);
+
+
+                // const mytext2 = $('[name="SAMLRequest"][value]');
+                formAction = $('form').attr('action');
+                samlRequestValue = $('input[name="SAMLRequest"]').val();
+                relayStateValue = $('input[name="RelayState"]').val();
+
+                // console.log('MY TEXT -- ', formAction);
+                //  console.log('MY TEXT -- ', samlRequestValue);
+                //console.log('MY TEXT -- ', relayStateValue);
+            })
+
             //var data = JSON.stringify({ "RelayState": relayStateValue, "SAMLRequest": samlRequestValue });
             const formData = new URLSearchParams();
             formData.append('RelayState', relayStateValue);
             formData.append('SAMLRequest', samlRequestValue);
 
- 
+
 
             const config2 = {
                 'method': 'POST',
@@ -119,118 +120,193 @@ describe('BSS Sanity Suite', () => {
                 html = response.data;
                 $ = cheerio.load(html);
                 actionURL = $('input[name="actionURL"]').attr('value');
-                //console.log('ACTION URL===>>> ', actionURL);
-            //    console.log('COOKIE FROM 2 -------'+cookie);
-                }) 
+            })
 
-                let IDToken1 = 'ci.pp.sqd04.ts018@ci-opus-stg.com'
-                let IDToken2 = 'Telus@1234'
+            let IDToken1 = 'ci.pp.sqd04.ts018@ci-opus-stg.com'
+            let IDToken2 = 'Telus@1234'
 
-                const userCreds = new URLSearchParams();
-                userCreds.append('IDToken1', IDToken1);
-                userCreds.append('IDToken2', IDToken2);
-                userCreds.append('UserLanguage', 'en');
-             //   console.log('ACTION URL ---------- '+actionURL)
+            const userCreds = new URLSearchParams();
+            userCreds.append('IDToken1', IDToken1);
+            userCreds.append('IDToken2', IDToken2);
+            userCreds.append('UserLanguage', 'en');
+            //   console.log('ACTION URL ---------- '+actionURL)
+
+            //  let actualParams = userCreds.toString().replace(/%40/g, '');
+            //  console.log('USER CREDS -------- ', actualParams);
+
+            const config3 = {
+                'method': 'POST',
+                'url': 'https://telusidentity-pp.telus.com' + actionURL,
+                //'url': 'https://telusidentity-pp.telus.com/idp/IV6jn/resumeSAML20/idp/SSO.ping?service_type=optik',
+                'maxBodyLength': Infinity,
+                'headers': {
+                    'Cookie': cookie,
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Host': 'telusidentity-pp.telus.com',
+                    'User-Agent': 'PostmanRuntime/7.32.2',
+                    'Accept': '*/*',
+                    'Origin': 'https://telusidentity-pp.telus.com',
+                    // 'Referer': formAction,
+                    'Referer': 'https://telusidentity-pp.telus.com/idp/SSO.saml2',
+                    't-optik-tvos': '1.0.0',
+                    'telusScripts': 'myTelusE2E'
+
+                },
+                'data': userCreds,
+                'httpsAgent': httpsAgentPreProd
+            }
+
+            response = await axios(config3).then((response) => {
+                //console.log('Response Body 3:===>>> '+ response.data);
+                html = response.data;
+                $ = cheerio.load(html);
+
+                relayStateValue = $('input[name="RelayState"]').val();
+                samlRequestValue = $('input[name="SAMLResponse"]').val();
+                formAction = $('form').attr('action');               
+            });
+
+            let referer = 'https://telusidentity-pp.telus.com' + actionURL;
+            let pingURL = null;
+            let secretcode = null;
+
+            let datafinal = qs.stringify({
+                'RelayState': relayStateValue,
+                'SAMLResponse':  samlRequestValue
+              });
+
+            const config4 = {
+                'method': 'POST',
+                //'url': formAction,
+                'url': 'https://oauth.cto.tv.telus.net/sp/ACS.saml2',
+                //'url': 'https://telusidentity-pp.telus.com/idp/IV6jn/resumeSAML20/idp/SSO.ping?service_type=optik',
+                'maxBodyLength': Infinity,
+                'maxRedirects': 0,
+                'headers': {
+                    'Cookie': cookie,
+                    'Cache-Control': 'no-cache;no-store',
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Host': 'oauth.cto.tv.telus.net',   //CHANGE THIS TO FETCH FROM ACTION URL OF FORM
+                    'Origin': 'https://telusidentity-pp.telus.com',
+                    'Referer': referer,
+                    //'Referer': 'https://telusidentity-pp.telus.com/idp/SSO.saml2'
+
+                },
+                'data': datafinal,
+                'httpsAgent': httpsAgentPreProd
+
+            }
+            await axios(config4).then((err, response) => {
+               
                 
-              //  let actualParams = userCreds.toString().replace(/%40/g, '');
-              //  console.log('USER CREDS -------- ', actualParams);
+                //console.log('Response Body 4:===>>> ' + response);
+                // html =  response.data;
+                // $ = cheerio.load(html);
 
-                const config3 = {
-                    'method': 'POST',
-                    'url': 'https://telusidentity-pp.telus.com'+actionURL,
-                    //'url': 'https://telusidentity-pp.telus.com/idp/IV6jn/resumeSAML20/idp/SSO.ping?service_type=optik',
-                    'maxBodyLength': Infinity,
-                    'headers': {
-                        'Cookie': cookie,
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                        'Host': 'telusidentity-pp.telus.com',
-                        'User-Agent': 'PostmanRuntime/7.32.2',
-                        'Accept': '*/*',
-                        'Origin': 'https://telusidentity-pp.telus.com',
-                       // 'Referer': formAction,
-                       'Referer': 'https://telusidentity-pp.telus.com/idp/SSO.saml2',
-                       't-optik-tvos': '1.0.0',
-                       'telusScripts': 'myTelusE2E'
-    
-                    },
-                    'data': userCreds,
-                    'httpsAgent': httpsAgentPreProd
+            }).catch((error) => { // error is handled in catch block
+                if (error.response) { // status code out of the range of 2xx
+                    pingURL = error.response.headers['location'];
                 }
-    
-                response = await axios(config3).then((response) => {
-                    //console.log('Response Body 3:===>>> '+ response.data);
-                    html =  response.data;
-                    $ = cheerio.load(html);
-            
-                   relayStateValue = $('input[name="RelayState"]').val();
-                   samlRequestValue = $('input[name="SAMLResponse"]').val();
-                   formAction = $('form').attr('action');
+              });
 
-                 //  console.log('COOKIE FROM 3 -------'+cookie);
-                  // actionURL = $('input[name="actionURL"]').attr('value');                   
-                    });
+             // console.log("PING URL >>>>>>  :" , pingURL);
 
-                    //  const formData2 = new URLSearchParams();
-                    // formData2.append('RelayState', relayStateValue);
-                    //  formData2.append('SAMLRequest', samlRequestValue);
+            const config5 = {
+                'method': 'GET',
+                //'url': formAction,
+                'url': pingURL,
+                //'url': 'https://telusidentity-pp.telus.com/idp/IV6jn/resumeSAML20/idp/SSO.ping?service_type=optik',
+                'maxBodyLength': Infinity,
+                'maxRedirects': 0,
+                'headers': {
+                    'Cookie': cookie,
+                    'Cache-Control': 'no-cache;no-store',
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Host': 'oauth.cto.tv.telus.net',   //CHANGE THIS TO FETCH FROM ACTION URL OF FORM
+                    'Origin': 'https://telusidentity-pp.telus.com'
+                   // 'Referer': referer,
+                    //'Referer': 'https://telusidentity-pp.telus.com/idp/SSO.saml2'
 
-                    const formData2 = {
-                        RelayState: relayStateValue,
-                        SAMLRequest: samlRequestValue
-                      };
+                },
+                //'data': datafinal,
+                'httpsAgent': httpsAgentPreProd
+
+            }
+            response = await axios(config5).then((response) => {
+            }).catch((error) => { // error is handled in catch block
+                if (error.response) { // status code out of the range of 2xx
+                    secretcode = error.response.headers['location'];
+                }
+              });
 
 
-                     let referer = 'https://telusidentity-pp.telus.com'+actionURL;
-                    
-                    const config4 = {
-                        'method': 'POST',
-                        //'url': formAction,
-                        'url': 'https://oauth.cto.tv.telus.net/sp/ACS.saml2',
-                        //'url': 'https://telusidentity-pp.telus.com/idp/IV6jn/resumeSAML20/idp/SSO.ping?service_type=optik',
-                        'maxBodyLength': Infinity,
-                        'headers': {
-                            'Cookie': cookie,
-                           'Cache-Control': 'max-age=0',
-                           'Content-Type': 'application/x-www-form-urlencoded',
-                            'Host': 'oauth.cto.tv.telus.net',   //CHANGE THIS TO FETCH FROM ACTION URL OF FORM
-                            'User-Agent': 'PostmanRuntime/7.32.2',
-                            'Accept': '*/*',
-                            'Origin': 'https://telusidentity-pp.telus.com',
-                            'Referer': referer,
-                           //'Referer': 'https://telusidentity-pp.telus.com/idp/SSO.saml2',
-                             't-optik-tvos': '1.0.0',
-                            // 'telusScripts': 'myTelusE2E',
-                           // 'Connection': 'keep-alive'
-                           // 'json': true
-        
-                        },
-                        //data: formData2.toString().replace(/%/g, ""),
-                        data: formData2,
-                        'httpsAgent': httpsAgentPreProd
 
-                    }
 
-                   
+              console.log("Secret >>>>>>  :" , secretcode);
 
-                    //console.log('CONFIG >>>>>>> ', JSON.stringify(config4))
-                    //console.log('-------------------------------------------------');
+              const start = secretcode.indexOf("code=") + 5; // Adding 5 to skip "code="
+              const end = secretcode.indexOf("&", start) !== -1 ? secretcode.indexOf("&", start) : secretcode.length;
+              const code = secretcode.substring(start, end);
+              console.log(code);
 
-                   // console.log('COOKIE BEFORE SENDING REQUEST -------'+cookie);
 
-                    response = await axios(config4).then((response) => {
-                       console.log('Response Body 4:===>>> '+ response.data);
-                        // html =  response.data;
-                        // $ = cheerio.load(html);
-                        
-                       }) 
+              let avs_cookie = 'eyJhbGciOiJIUzI1NiJ9.eyJwYXlsb2FkIjoiOFQ5SHl1QTYrSWVtTjhkblh2aHNyKzh6QWlhaXpCSG9mT2lSUnZtYzQvUEdzNFhCZ0p0N005MVRFVjA1ZjNOWFp2dFhqeUx6QnNqbUN2WUNQSXltbE5RbDZMUVRiL0JQcVBpeGxraTMzV3h3STdHcnRXT1pQYm5oR01iczg2aW1qMW5iazZuanY2a1BDL2xwZmhXNUttOGw5Y29zM05iM0Z0OGxLdVFUT1pJQVBvb0JYMjJ0R2o3OXFNRWRISy9nV0VoTWROeFVkZCtnNlR2KzN4U3kvS3V4bUtYUTF5bUVKRTdlSUk0VXh4V0RWRHh2ZjNKekxLNi9jclYvdU5nZ3p0MVF4RVhoakN5aHBBRGMwQTNOZk5hcS9leEV4SzFRQml3OUloTnBCa1RpSzB3MTR5NnhhNHpVV0J4TkNFYmRFWjNBTkc2WHlWZFRQbEgxdVlXWlRMRXUzY1RFQm15NnRCcndmY2ZHY2RZTzdoNTFWd0lVYkVWc2ZRdUwwaE5RVUVZRzBqSzJ1TFA5U0grVmpBeGhyTjJXMzV5bmdnPT0iLCJub25jZSI6IjZOMDlQb3NBUlErWnRteCsiLCJpc3MiOiJBVlMiLCJleHAiOjE2ODY4NDU0MDd9.vOXL2zWe68hPYS_c1KCOV2du-gvXa_wHf7Yw9ThUY1o';
+              let up = '';
+              let telus_user_profile = '';
+              let sessionId = '3158a76f-6173-038b-84d8-b4e4a9262c6e';
+              let telus_refresh_cookie = '';
+              let telus_access_cookie = '';
 
-    
 
-        } catch (err) {
-            console.log(err.response.data);
-        }
+
+              const cookieData = 'avs_cookie=' + avs_cookie + ';up=' + up + ';telus_user_profile=' + telus_user_profile 
+              +';sessionId=' + sessionId
+              + ';telus_refresh_cookie=' + telus_refresh_cookie + ';telus_access_cookie=' + telus_access_cookie
+
+
+              const configLogin = {
+                'method': 'POST',
+                //'url': formAction,
+                'url': 'https://telus.preprod.n.svc.tv.telus.net/TELUS/T2.1/R/ENG/IOS/OPTIK/USER/SESSIONS',
+                //'url': 'https://telusidentity-pp.telus.com/idp/IV6jn/resumeSAML20/idp/SSO.ping?service_type=optik',
+                'maxBodyLength': Infinity,
+                'maxRedirects': 0,
+                'headers': {
+                    'Cookie': cookieData,
+                   // 'Cache-Control': 'no-cache;no-store',
+                  //  'Content-Type': 'application/x-www-form-urlencoded',
+                  //  'Host': 'oauth.cto.tv.telus.net',   //CHANGE THIS TO FETCH FROM ACTION URL OF FORM
+                   // 'Origin': 'https://telusidentity-pp.telus.com'
+                   // 'Referer': referer,
+                    //'Referer': 'https://telusidentity-pp.telus.com/idp/SSO.saml2'
+
+                },
+                //'data': datafinal,
+                'httpsAgent': httpsAgentPreProd
+
+            }
+            response = await axios(configLogin).then((response) => {
+                console.log('RESPONSE ----->>> ', response.data);
+            }).catch((error) => { // error is handled in catch block
+                if (error.response) { // status code out of the range of 2xx
+                    secretcode = error.response.headers['location'];
+                }
+              });
+           
+
+        // } catch (err) {
+        //     console.log('ERROR PARAM ->>>> ',err.response);
+        // }
     });
 
+
+
 })
+
+function getResponseHeaders() {
+    let headers = '';
+    
+    return dataString;
+}
 
 
