@@ -5,7 +5,7 @@
   "scripts": {
     "start": "mocha ./tests/testuser.js --reporter mochawesome",
     "test": "mocha ./tests/*.js --timeout=30000 --reporter mochawesome",
-    "multiple": "mocha ./tests/test_multiple_users.js --reporter mochawesome"
+    "multiple": "mocha ./tests/test_multiple.js"
   },
   "author": "",
   "license": "ISC",
@@ -22,13 +22,19 @@
   "dependencies": {
     "chai-http": "^4.3.0",
     "chance": "^1.1.11",
+    "cheerio": "^1.0.0-rc.12",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.1.4",
+    "cookie-session": "^2.0.0",
     "express-flash": "^0.0.2",
     "express-session": "^1.17.3",
+    "form-urlencoded": "^6.1.0",
     "fs": "^0.0.1-security",
     "mochawesome-report-generator": "^6.2.0",
+    "node-fetch": "^3.3.1",
     "passport": "^0.6.0",
+    "qs": "^6.11.2",
+    "querystring": "^0.2.1",
     "session-file-store": "^1.5.0",
     "text-encoding": "^0.7.0"
   }

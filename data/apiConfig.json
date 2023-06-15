@@ -56,4 +56,5 @@
         "STOP_CONTENT_LIVE_URI": "TELUS/T2.0/R/ENG/{{platform}}/{{property}}/CONTENT/USERDATA/LIVE/75",
         "USER_SESSIONS_URI": "TELUS/T2.0/R/ENG/{{platform}}/{{property}}/USER/SESSIONS"
     }
+    
 }

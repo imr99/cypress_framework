@@ -352,7 +352,7 @@
                         "deviceType": "ANDROID_TV_BYOD"
                     },
                     "credentials": {
-                        "secret": "jkEl_QJ14YvPRyahbZf3DgeC9-ftS9KuFOQAAABl",
+                        "secret": "64MsW4nco1gYD43rN7vsDvuvACUTn-5kvfcAAABm",
                         "client_id": "opus",
                         "state": "fb1b6c54-1933-4ed5-995d-935e18518f73",
                         "redirect_uri": "http://localhost"
